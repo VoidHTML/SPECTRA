@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPECTRA — Configurateur</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    /* Petites retouches Pantone par dessus Bootstrap */
+    body { font-family: 'DM Mono', monospace; }
+
+    .navbar-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.2em;
+      background: linear-gradient(90deg, #ff0040, #ffcc00, #00e5ff, #7c00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .spectrum-strip {
+      height: 5px;
+      background: linear-gradient(90deg, #ff0040, #ff6600, #ffcc00, #00e5ff, #7c00ff);
+    }
+
+    /* Header pricing */
+    .pricing-header { max-width: 700px; }
+
+    /* Three.js canvas */
+    #three-canvas {
+      width: 100%;
+      height: 500px;
+      display: block;
+      background: #0a0a0a;
+      border-radius: 0.375rem;
+    }
+
+    /* Cards pricing — on garde le style Bootstrap natif */
+    .card-header { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; font-size: 1.2rem; }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #ff6600, #ffcc00);
+      border: none;
+      color: #000;
+      font-family: 'DM Mono', monospace;
+      font-weight: bold;
+    }
+    .btn-primary:hover { background: linear-gradient(90deg, #ff0040, #ff6600); color: #fff; }
+
+    .btn-outline-primary {
+      border-color: #ff6600;
+      color: #ff6600;
+      font-family: 'DM Mono', monospace;
+    }
+    .btn-outline-primary:hover { background: #ff6600; color: #fff; }
+
+    /* UI contrôles Three.js */
+    #controls .btn { font-size: 0.75rem; letter-spacing: 0.05em; }
+
+    input[type=color] {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #dee2e6;
+      padding: 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ──────────────────────────────────────────────────── -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Le logo à mettre</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Configurateur</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="spectrum-strip" style="margin-top:56px"></div>
+
+  <main>
+
+    <!-- ── HEADER (pricing style) ──────────────────────────────────── -->
+    <div class="container py-5">
+      <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal" style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em">Configurateur</h1>
+        <p class="fs-5 text-body-secondary">
+          Visualise ton hoodie en 3D. Choisis ton design, ta couleur, et commande.
+        </p>
+      </div>
+
+      <!-- ── THREE.JS VIEWER ────────────────────────────────────────── -->
+      <div class="row mb-4">
+        <div class="col-lg-8">
+          <canvas id="three-canvas"></canvas>
+        </div>
+
+        <!-- ── CONTRÔLES ─────────────────────────────────────────────── -->
+        <div class="col-lg-4" id="controls">
+
+          <!-- Design -->
+          <div class="card mb-3">
+            <div class="card-header">Design</div>
+            <div class="card-body">
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-fill active-design" onclick="switchDesign(1, this)">Modèle S. (Simple)</button>
+                <button class="btn btn-outline-primary flex-fill" onclick="switchDesign(2, this)">Modèle C. (Complexe)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Couleur — Design 1 -->
+          <div class="card mb-3" id="card-color-d1">
+            <div class="card-header">Couleur du sweat</div>
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-3">
+                <input type="color" id="color-d1" value="#ff9700">
+                <span class="text-body-secondary small" id="hex-d1">#FF9700</span>
+              </div>
+              <!-- Presets -->
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#ff9700" onclick="setColor('#ff9700')"></button>
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#ff0040" onclick="setColor('#ff0040')"></button>
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#00e5ff" onclick="setColor('#00e5ff')"></button>
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#7c00ff" onclick="setColor('#7c00ff')"></button>
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#ffffff;border:1px solid #ddd" onclick="setColor('#ffffff')"></button>
+                <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#111111" onclick="setColor('#111111')"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Couleur — Design 2 -->
+          <div class="card mb-3 d-none" id="card-color-d2">
+            <div class="card-header">Couleur du sweat</div>
+            <div class="card-body">
+              <div class="d-flex gap-2">
+                <button class="btn btn-dark flex-fill active" id="btn-noir" onclick="setFond('noir', this)">⬛ Noir</button>
+                <button class="btn btn-outline-secondary flex-fill" id="btn-blanc" onclick="setFond('blanc', this)">⬜ Blanc</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rotation -->
+          <div class="card mb-3">
+            <div class="card-header">Rotation</div>
+            <div class="card-body">
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary flex-fill" id="btn-rotate" onclick="toggleRotation()">▶ Auto</button>
+                <button class="btn btn-outline-secondary flex-fill" onclick="resetRotation()">↺ Reset</button>
+              </div>
+              <p class="text-body-secondary small mt-2 mb-0">Clic gauche + glisser pour tourner manuellement</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── SÉPARATEUR ─────────────────────────────────────────────── -->
+      <hr class="my-5">
+
+      <!-- ── PRICING CARDS (Bootstrap natif) ───────────────────────── -->
+      <h2 class="text-center mb-4" style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em">Choisir un modèle</h2>
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+
+        <!-- Free -->
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Classique</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">39€<small class="text-body-secondary fw-light">/pièce</small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Modèle S. (Simple)</li>
+                <li>1 couleur au choix</li>
+                <li>Couleur personnalisée</li>
+                <li>Livraison standard</li>
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Commander</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pro -->
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-primary">
+            <div class="card-header py-3 text-bg-primary border-primary">
+              <h4 class="my-0 fw-normal">Premium</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">59€<small class="text-body-secondary fw-light">/pièce</small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Modèle C. (Complexe)</li>
+                <li>Couleur personnalisée</li>
+                <li>Impression recto + verso</li>
+                <li>Livraison express</li>
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-primary">Commander</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Édition Limitée</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">99€<small class="text-body-secondary fw-light">/pièce</small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Design exclusif numéroté</li>
+                <li>Toutes couleurs</li>
+                <li>Full print</li>
+                <li>Certificat d'authenticité</li>
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Nous contacter</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+     
+
+    </div>
+  </main>
+
+  <!-- ── FOOTER (Bootstrap natif) ──────────────────────────────── -->
+  <footer class="py-5 bg-dark text-white mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-6 col-md-2 mb-3">
+          <h5 style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em">Artiste</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Biographie</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Œuvres</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Expositions</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-2 mb-3">
+          <h5 style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em">Projet</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">SAE</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Configurateur</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-5 offset-md-1 mb-3">
+          <div class="spectrum-strip mb-3" style="height:3px;border-radius:2px"></div>
+          <p class="text-body-secondary small">© 2024–2025 SPECTRA — SAE Design Numérique<br>Projet Felipe Pantone</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <script>
+    // ── Three.js setup ─────────────────────────────────────────
+    const canvas = document.getElementById('three-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a0a0a');
+
+    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.01, 100);
+    camera.position.set(0, 0, 3);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dir = new THREE.DirectionalLight(0xffffff, 1);
+    dir.position.set(2, 3, 2);
+    scene.add(dir);
+
+    // ── Orbit manuel ──────────────────────────────────────────
+    let isDown = false, lastX = 0, lastY = 0, rotX = 0, rotY = 0;
+    let autoRot = true;
+    const group = new THREE.Group();
+    scene.add(group);
+
+    canvas.addEventListener('mousedown', e => { isDown = true; autoRot = false; lastX = e.clientX; lastY = e.clientY; document.getElementById('btn-rotate').textContent = '▶ Auto'; });
+    canvas.addEventListener('mouseup', () => isDown = false);
+    canvas.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      rotY += (e.clientX - lastX) * 0.008;
+      rotX += (e.clientY - lastY) * 0.008;
+      rotX = Math.max(-1.2, Math.min(1.2, rotX));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+
+    function toggleRotation() {
+      autoRot = !autoRot;
+      document.getElementById('btn-rotate').textContent = autoRot ? '⏸ Auto' : '▶ Auto';
+    }
+    function resetRotation() { rotX = 0; rotY = 0; }
+
+    // ── Matériaux ─────────────────────────────────────────────
+    const textureLoader = new THREE.TextureLoader();
+    let currentDesign = 1;
+    let fondActuel = 'noir';
+    let meshesBase = [], meshesDesign = [];
+
+    const matD1 = new THREE.MeshStandardMaterial({ color: new THREE.Color('#ff9700'), roughness: 0.8 });
+    const matFond = new THREE.MeshStandardMaterial({ color: new THREE.Color('#000000'), roughness: 0.8 });
+    const matDesign2 = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#ffffff'),
+      roughness: 0.8,
+      transparent: true,
+      depthWrite: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+    });
+
+    const texDesign2 = textureLoader.load('mondesign3.png', () => {
+      texDesign2.encoding = THREE.sRGBEncoding;
+      texDesign2.flipY = false;
+      matDesign2.map = texDesign2;
+      matDesign2.needsUpdate = true;
+    });
+
+    // ── Design 1 ──────────────────────────────────────────────
+    function applyDesign1() {
+      const tex = textureLoader.load('modeleSdesign.png');
+      tex.encoding = THREE.sRGBEncoding;
+      tex.flipY = false;
+      matD1.map = tex;
+      matD1.color.set(document.getElementById('color-d1').value);
+      matD1.transparent = false;
+      matD1.needsUpdate = true;
+      meshesBase.forEach(m => { m.material = matD1; m.visible = true; });
+      meshesDesign.forEach(m => m.visible = false);
+    }
+
+    // ── Design 2 ──────────────────────────────────────────────
+    function applyDesign2() {
+      matFond.color.set(fondActuel === 'noir' ? '#000000' : '#ffffff');
+      matFond.needsUpdate = true;
+      meshesBase.forEach(m => { m.material = matFond; m.visible = true; });
+      meshesDesign.forEach(m => m.visible = true);
+    }
+
+    // ── Switch design ─────────────────────────────────────────
+    function switchDesign(num, btn) {
+      currentDesign = num;
+      document.querySelectorAll('[onclick^="switchDesign"]').forEach(b => {
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-outline-primary');
+      });
+      btn.classList.remove('btn-outline-primary');
+      btn.classList.add('btn-primary');
+      document.getElementById('card-color-d1').classList.toggle('d-none', num !== 1);
+      document.getElementById('card-color-d2').classList.toggle('d-none', num !== 2);
+      if (num === 1) applyDesign1();
+      else applyDesign2();
+    }
+
+    // ── Color picker D1 ───────────────────────────────────────
+    document.getElementById('color-d1').addEventListener('input', e => {
+      matD1.color.set(e.target.value);
+      document.getElementById('hex-d1').textContent = e.target.value.toUpperCase();
+    });
+
+    function setColor(hex) {
+      document.getElementById('color-d1').value = hex;
+      matD1.color.set(hex);
+      document.getElementById('hex-d1').textContent = hex.toUpperCase();
+    }
+
+    // ── Boutons fond D2 ───────────────────────────────────────
+    function setFond(fond, btn) {
+      fondActuel = fond;
+      document.getElementById('btn-noir').className = fond === 'noir' ? 'btn btn-dark flex-fill' : 'btn btn-outline-secondary flex-fill';
+      document.getElementById('btn-blanc').className = fond === 'blanc' ? 'btn btn-secondary flex-fill' : 'btn btn-outline-secondary flex-fill';
+      applyDesign2();
+    }
+
+    // ── Chargement GLB ────────────────────────────────────────
+    new THREE.GLTFLoader().load('Hoodie_Mockup_Final_Template.glb', gltf => {
+      const model = gltf.scene;
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const s = 2 / Math.max(size.x, size.y, size.z);
+      model.scale.setScalar(s);
+      model.position.sub(center.multiplyScalar(s));
+
+      model.traverse(child => {
+        if (!child.isMesh) return;
+        child.material = matD1;
+        meshesBase.push(child);
+        const clone = child.clone();
+        clone.material = matDesign2;
+        clone.visible = false;
+        child.parent.add(clone);
+        meshesDesign.push(clone);
+      });
+
+      group.add(model);
+      applyDesign1();
+    });
+
+    // ── Render loop ───────────────────────────────────────────
+    function animate() {
+      requestAnimationFrame(animate);
+      if (autoRot) rotY += 0.004;
+      group.rotation.x = rotX;
+      group.rotation.y = rotY;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ── Resize ────────────────────────────────────────────────
+    window.addEventListener('resize', () => {
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    });
+  </script>
+
+</body>
+</html>
