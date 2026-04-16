@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono&display=swap" rel="stylesheet">
 
   <style>
-    /* Petites retouches Pantone par dessus Bootstrap */
     body { font-family: 'DM Mono', monospace; }
 
     .navbar-brand {
@@ -26,10 +25,8 @@
       background: linear-gradient(90deg, #ff0040, #ff6600, #ffcc00, #00e5ff, #7c00ff);
     }
 
-    /* Header pricing */
     .pricing-header { max-width: 700px; }
 
-    /* Three.js canvas */
     #three-canvas {
       width: 100%;
       height: 500px;
@@ -38,7 +35,6 @@
       border-radius: 0.375rem;
     }
 
-    /* Cards pricing — on garde le style Bootstrap natif */
     .card-header { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; font-size: 1.2rem; }
 
     .btn-primary {
@@ -57,7 +53,6 @@
     }
     .btn-outline-primary:hover { background: #ff6600; color: #fff; }
 
-    /* UI contrôles Three.js */
     #controls .btn { font-size: 0.75rem; letter-spacing: 0.05em; }
 
     input[type=color] {
@@ -85,37 +80,33 @@
   <div class="spectrum-strip" style="margin-top:56px"></div>
 
   <main>
-
-    <!-- ── HEADER (pricing style) ──────────────────────────────────── -->
     <div class="container py-5">
+
+      <!-- ── HEADER ──────────────────────────────────────────────── -->
       <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 class="display-4 fw-normal" style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em">Configurateur</h1>
-        <p class="fs-5 text-body-secondary">
-          Visualise ton hoodie en 3D. Choisis ton design, ta couleur, et commande.
-        </p>
+        <p class="fs-5 text-body-secondary">Visualise ton hoodie en 3D. Choisis ton design, ta couleur, et commande.</p>
       </div>
 
-      <!-- ── THREE.JS VIEWER ────────────────────────────────────────── -->
+      <!-- ── THREE.JS VIEWER ─────────────────────────────────────── -->
       <div class="row mb-4">
         <div class="col-lg-8">
           <canvas id="three-canvas"></canvas>
         </div>
 
-        <!-- ── CONTRÔLES ─────────────────────────────────────────────── -->
+        <!-- ── CONTRÔLES ──────────────────────────────────────────── -->
         <div class="col-lg-4" id="controls">
 
-          <!-- Design -->
           <div class="card mb-3">
             <div class="card-header">Design</div>
             <div class="card-body">
               <div class="d-flex gap-2">
-                <button class="btn btn-primary flex-fill active-design" onclick="switchDesign(1, this)">Modèle S. (Simple)</button>
+                <button class="btn btn-primary flex-fill" onclick="switchDesign(1, this)">Modèle S. (Simple)</button>
                 <button class="btn btn-outline-primary flex-fill" onclick="switchDesign(2, this)">Modèle C. (Complexe)</button>
               </div>
             </div>
           </div>
 
-          <!-- Couleur — Design 1 -->
           <div class="card mb-3" id="card-color-d1">
             <div class="card-header">Couleur du sweat</div>
             <div class="card-body">
@@ -123,7 +114,6 @@
                 <input type="color" id="color-d1" value="#ff9700">
                 <span class="text-body-secondary small" id="hex-d1">#FF9700</span>
               </div>
-              <!-- Presets -->
               <div class="d-flex flex-wrap gap-2 mt-3">
                 <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#ff9700" onclick="setColor('#ff9700')"></button>
                 <button class="btn btn-sm rounded-circle p-0" style="width:30px;height:30px;background:#ff0040" onclick="setColor('#ff0040')"></button>
@@ -135,18 +125,16 @@
             </div>
           </div>
 
-          <!-- Couleur — Design 2 -->
           <div class="card mb-3 d-none" id="card-color-d2">
             <div class="card-header">Couleur du sweat</div>
             <div class="card-body">
               <div class="d-flex gap-2">
-                <button class="btn btn-dark flex-fill active" id="btn-noir" onclick="setFond('noir', this)">⬛ Noir</button>
+                <button class="btn btn-dark flex-fill" id="btn-noir" onclick="setFond('noir', this)">⬛ Noir</button>
                 <button class="btn btn-outline-secondary flex-fill" id="btn-blanc" onclick="setFond('blanc', this)">⬜ Blanc</button>
               </div>
             </div>
           </div>
 
-          <!-- Rotation -->
           <div class="card mb-3">
             <div class="card-header">Rotation</div>
             <div class="card-body">
@@ -161,19 +149,15 @@
         </div>
       </div>
 
-      <!-- ── SÉPARATEUR ─────────────────────────────────────────────── -->
       <hr class="my-5">
 
-      <!-- ── PRICING CARDS (Bootstrap natif) ───────────────────────── -->
+      <!-- ── PRICING CARDS ───────────────────────────────────────── -->
       <h2 class="text-center mb-4" style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em">Choisir un modèle</h2>
       <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
 
-        <!-- Free -->
         <div class="col">
           <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Classique</h4>
-            </div>
+            <div class="card-header py-3"><h4 class="my-0 fw-normal">Classique</h4></div>
             <div class="card-body">
               <h1 class="card-title pricing-card-title">39€<small class="text-body-secondary fw-light">/pièce</small></h1>
               <ul class="list-unstyled mt-3 mb-4">
@@ -182,17 +166,14 @@
                 <li>Couleur personnalisée</li>
                 <li>Livraison standard</li>
               </ul>
-              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Commander</button>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal">Commander</button>
             </div>
           </div>
         </div>
 
-        <!-- Pro -->
         <div class="col">
           <div class="card mb-4 rounded-3 shadow-sm border-primary">
-            <div class="card-header py-3 text-bg-primary border-primary">
-              <h4 class="my-0 fw-normal">Premium</h4>
-            </div>
+            <div class="card-header py-3 text-bg-primary border-primary"><h4 class="my-0 fw-normal">Premium</h4></div>
             <div class="card-body">
               <h1 class="card-title pricing-card-title">59€<small class="text-body-secondary fw-light">/pièce</small></h1>
               <ul class="list-unstyled mt-3 mb-4">
@@ -201,38 +182,151 @@
                 <li>Impression recto + verso</li>
                 <li>Livraison express</li>
               </ul>
-              <button type="button" class="w-100 btn btn-lg btn-primary">Commander</button>
+              <button type="button" class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">Commander</button>
             </div>
           </div>
         </div>
 
-        <!-- Enterprise -->
         <div class="col">
           <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">Édition Limitée</h4>
-            </div>
+            <div class="card-header py-3"><h4 class="my-0 fw-normal">Édition Limitée</h4></div>
             <div class="card-body">
               <h1 class="card-title pricing-card-title">99€<small class="text-body-secondary fw-light">/pièce</small></h1>
               <ul class="list-unstyled mt-3 mb-4">
-                <li>Prendre 2 design</li>
+                <li>Prendre 2 designs</li>
                 <li>Toutes couleurs</li>
                 <li>Couleur personnalisée</li>
                 <li>Livré sous 24h</li>
               </ul>
-              <button type="button" class="w-100 btn btn-lg btn-outline-primary">Nous contacter</button>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal">Commander</button>
             </div>
           </div>
         </div>
 
       </div>
 
-     
-
     </div>
   </main>
 
-  <!-- ── FOOTER (Bootstrap natif) ──────────────────────────────── -->
+  <!-- ── MODAL ───────────────────────────────────────────────────── -->
+  <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderModalLabel">Commander — Informations de livraison</h5>
+          <small class="text-body-secondary ms-2">(Ces achats ne sont pas fonctionnels)</small>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="orderForm" novalidate>
+            <div class="row g-3">
+
+              <div class="col-sm-6">
+                <label for="firstName" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="firstName" required>
+                <div class="invalid-feedback">Prénom requis.</div>
+              </div>
+
+              <div class="col-sm-6">
+                <label for="lastName" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="lastName" required>
+                <div class="invalid-feedback">Nom requis.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+                <div class="invalid-feedback">Email invalide.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="address" class="form-label">Adresse</label>
+                <input type="text" class="form-control" id="address" required>
+                <div class="invalid-feedback">Adresse requise.</div>
+              </div>
+
+              <div class="col-12">
+                <label for="address2" class="form-label">Adresse 2 <span class="text-body-secondary">(optionnel)</span></label>
+                <input type="text" class="form-control" id="address2">
+              </div>
+
+              <div class="col-12">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="save-info">
+                  <label class="form-check-label" for="save-info">Sauvegarder pour les prochains achats</label>
+                </div>
+              </div>
+
+              <div class="col-12"><hr></div>
+
+              <div class="col-12">
+                <h5>Paiement</h5>
+                <div class="d-flex gap-3">
+                  <div class="form-check">
+                    <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked>
+                    <label class="form-check-label" for="credit">Carte de crédit</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input">
+                    <label class="form-check-label" for="debit">Carte de débit</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input">
+                    <label class="form-check-label" for="paypal">PayPal</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-name" class="form-label">Nom sur la carte</label>
+                <input type="text" class="form-control" id="cc-name" required>
+                <div class="invalid-feedback">Requis.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-number" class="form-label">Numéro de carte</label>
+                <input type="text" class="form-control" id="cc-number" required>
+                <div class="invalid-feedback">Requis.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-expiration" class="form-label">Expiration</label>
+                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/AA" required>
+                <div class="invalid-feedback">Requis.</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-cvv" class="form-label">CVV</label>
+                <input type="text" class="form-control" id="cc-cvv" required>
+                <div class="invalid-feedback">Requis.</div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" id="submitBtn">Envoyer</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ───────────────────────────────────────────────────── -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fs-6">✅ Votre commande a bien été envoyée !</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────────── -->
   <footer class="py-5 bg-dark text-white mt-5">
     <div class="container">
       <div class="row">
@@ -267,6 +361,19 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
   <script>
+    // ── Toast + validation formulaire ─────────────────────────
+    document.getElementById('submitBtn').addEventListener('click', function () {
+      const form = document.getElementById('orderForm');
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+      bootstrap.Modal.getInstance(document.getElementById('orderModal')).hide();
+      new bootstrap.Toast(document.getElementById('successToast'), { delay: 4000 }).show();
+      form.reset();
+      form.classList.remove('was-validated');
+    });
+
     // ── Three.js setup ─────────────────────────────────────────
     const canvas = document.getElementById('three-canvas');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -331,7 +438,6 @@
       matDesign2.needsUpdate = true;
     });
 
-    // ── Design 1 ──────────────────────────────────────────────
     function applyDesign1() {
       const tex = textureLoader.load('modeleSdesign.png');
       tex.encoding = THREE.sRGBEncoding;
@@ -344,7 +450,6 @@
       meshesDesign.forEach(m => m.visible = false);
     }
 
-    // ── Design 2 ──────────────────────────────────────────────
     function applyDesign2() {
       matFond.color.set(fondActuel === 'noir' ? '#000000' : '#ffffff');
       matFond.needsUpdate = true;
@@ -352,7 +457,6 @@
       meshesDesign.forEach(m => m.visible = true);
     }
 
-    // ── Switch design ─────────────────────────────────────────
     function switchDesign(num, btn) {
       currentDesign = num;
       document.querySelectorAll('[onclick^="switchDesign"]').forEach(b => {
@@ -367,7 +471,6 @@
       else applyDesign2();
     }
 
-    // ── Color picker D1 ───────────────────────────────────────
     document.getElementById('color-d1').addEventListener('input', e => {
       matD1.color.set(e.target.value);
       document.getElementById('hex-d1').textContent = e.target.value.toUpperCase();
@@ -379,7 +482,6 @@
       document.getElementById('hex-d1').textContent = hex.toUpperCase();
     }
 
-    // ── Boutons fond D2 ───────────────────────────────────────
     function setFond(fond, btn) {
       fondActuel = fond;
       document.getElementById('btn-noir').className = fond === 'noir' ? 'btn btn-dark flex-fill' : 'btn btn-outline-secondary flex-fill';
@@ -387,7 +489,6 @@
       applyDesign2();
     }
 
-    // ── Chargement GLB ────────────────────────────────────────
     new THREE.GLTFLoader().load('Hoodie_Mockup_Final_Template.glb', gltf => {
       const model = gltf.scene;
       const box = new THREE.Box3().setFromObject(model);
@@ -396,7 +497,6 @@
       const s = 2 / Math.max(size.x, size.y, size.z);
       model.scale.setScalar(s);
       model.position.sub(center.multiplyScalar(s));
-
       model.traverse(child => {
         if (!child.isMesh) return;
         child.material = matD1;
@@ -407,12 +507,10 @@
         child.parent.add(clone);
         meshesDesign.push(clone);
       });
-
       group.add(model);
       applyDesign1();
     });
 
-    // ── Render loop ───────────────────────────────────────────
     function animate() {
       requestAnimationFrame(animate);
       if (autoRot) rotY += 0.004;
@@ -422,7 +520,6 @@
     }
     animate();
 
-    // ── Resize ────────────────────────────────────────────────
     window.addEventListener('resize', () => {
       renderer.setSize(canvas.clientWidth, canvas.clientHeight);
       camera.aspect = canvas.clientWidth / canvas.clientHeight;
