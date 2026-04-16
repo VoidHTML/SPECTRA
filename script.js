@@ -68,7 +68,7 @@
       polygonOffsetFactor: -1,
     });
 
-    const texDesign2 = textureLoader.load('mondesign3.png', () => {
+    const texDesign2 = textureLoader.load('img/mondesign3.png', () => {
       texDesign2.encoding = THREE.sRGBEncoding;
       texDesign2.flipY = false;
       matDesign2.map = texDesign2;
@@ -76,7 +76,7 @@
     });
 
     function applyDesign1() {
-      const tex = textureLoader.load('modeleSdesign.png');
+      const tex = textureLoader.load('img/modeleSdesign.png');
       tex.encoding = THREE.sRGBEncoding;
       tex.flipY = false;
       matD1.map = tex;
