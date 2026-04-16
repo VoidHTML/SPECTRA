@@ -333,21 +333,16 @@
 
     // ── Design 1 ──────────────────────────────────────────────
     function applyDesign1() {
-  // Fond = couleur unie
-  matFond.color.set(document.getElementById('color-d1').value);
-  matFond.map = null;
-  matFond.needsUpdate = true;
-
-  // Design = PNG intact
-  const tex = textureLoader.load('modeleSdesign.png');
-  tex.encoding = THREE.sRGBEncoding;
-  tex.flipY = false;
-  matDesign2.map = tex;
-  matDesign2.needsUpdate = true;
-
-  meshesBase.forEach(m => { m.material = matFond; m.visible = true; });
-  meshesDesign.forEach(m => m.visible = true); // ← visible aussi pour D1
-}
+      const tex = textureLoader.load('modeleSdesign.png');
+      tex.encoding = THREE.sRGBEncoding;
+      tex.flipY = false;
+      matD1.map = tex;
+      matD1.color.set(document.getElementById('color-d1').value);
+      matD1.transparent = false;
+      matD1.needsUpdate = true;
+      meshesBase.forEach(m => { m.material = matD1; m.visible = true; });
+      meshesDesign.forEach(m => m.visible = false);
+    }
 
     // ── Design 2 ──────────────────────────────────────────────
     function applyDesign2() {
@@ -374,7 +369,7 @@
 
     // ── Color picker D1 ───────────────────────────────────────
     document.getElementById('color-d1').addEventListener('input', e => {
-      matFond.color.set(e.target.value);
+      matD1.color.set(e.target.value);
       document.getElementById('hex-d1').textContent = e.target.value.toUpperCase();
     });
 
